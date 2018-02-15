@@ -138,7 +138,19 @@ namespace EjemploLab1.Controllers
         // GET: /Persona/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Persona personaBuscada = db.Personas.Find(x => x.PersonaID == id);
+
+            if (personaBuscada == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(personaBuscada);
         }
 
         //
@@ -149,7 +161,19 @@ namespace EjemploLab1.Controllers
             try
             {
                 // TODO: Add delete logic here
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
 
+                Persona personaBuscada = db.Personas.Find(x => x.PersonaID == id);
+
+                if (personaBuscada == null)
+                {
+                    return HttpNotFound();
+                }
+
+                db.Personas.Remove(personaBuscada);
                 return RedirectToAction("Index");
             }
             catch
