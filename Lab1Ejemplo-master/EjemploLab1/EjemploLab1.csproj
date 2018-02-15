@@ -157,6 +157,7 @@
     <Content Include="Views\Persona\Index.cshtml" />
     <Content Include="Views\Persona\Create.cshtml" />
     <Content Include="Views\Persona\Edit.cshtml" />
+    <Content Include="Views\Persona\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

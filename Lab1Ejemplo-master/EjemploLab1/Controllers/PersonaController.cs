@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using EjemploLab1.DBContext;
 using EjemploLab1.Models;
 using System.Net;
+using System.IO;
 
 namespace EjemploLab1.Controllers
 {
@@ -15,7 +16,42 @@ namespace EjemploLab1.Controllers
 
         DefaultConnection db = DefaultConnection.getInstance;
        
-        //
+        
+        [HttpPost]  
+       public ActionResult LoadCSV(HttpPostedFileBase postedFile)  
+       {  
+           List<Persona> personas = new List<Persona>();
+           string filePath = string.Empty;  
+           if (postedFile != null)  
+           {  
+               string path = Server.MapPath("~/Uploads/");  
+               if (!Directory.Exists(path))  
+               {  
+                   Directory.CreateDirectory(path);  
+               }  
+               filePath = path + Path.GetFileName(postedFile.FileName);  
+               string extension = Path.GetExtension(postedFile.FileName);  
+               postedFile.SaveAs(filePath);  
+  
+               string csvData = System.IO.File.ReadAllText(filePath);  
+               foreach(string row in csvData.Split(' '))  
+               {  
+                   if (!string.IsNullOrEmpty(row))  
+                   {
+                       personas.Add(new Persona
+                       {
+                           PersonaID = Convert.ToInt32(row.Split(',')[0]),
+                           Club = row.Split(',')[1],
+                           Apellido = (row.Split(',')[2]),
+                           Nombre = row.Split(',')[3],
+                           Posicion = row.Split(',')[4],
+                           Salario = Convert.ToDouble(row.Split(',')[5]),
+                       });
+                   }  
+               }  
+           }  
+           return View();  
+       }
         // GET: /Persona/
         public ActionResult Index()
         {
@@ -39,7 +75,7 @@ namespace EjemploLab1.Controllers
         //
         // POST: /Persona/Create
         [HttpPost]
-        public ActionResult Create([Bind(Include = "PersonaID,Nombre,Apellido,Edad")] Persona persona)
+        public ActionResult Create([Bind(Include = "PersonaID,Nombre,Apellido,Edad,Salario,Club,Posicion")] Persona persona)
         {
             try
             {
@@ -75,7 +111,7 @@ namespace EjemploLab1.Controllers
         // POST: /Persona/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="PersonaID,Nombre,Apellido,Edad")]Persona persona)
+        public ActionResult Edit([Bind(Include = "PersonaID,Nombre,Apellido,Edad,Salario,Club,Posicion")]Persona persona)
         {
             try
             {
@@ -86,7 +122,9 @@ namespace EjemploLab1.Controllers
                 }
                 personaBuscada.Nombre = persona.Nombre;
                 personaBuscada.Apellido = persona.Apellido;
-                personaBuscada.Edad = persona.Edad;
+                personaBuscada.Club = persona.Club;
+                personaBuscada.Posicion = persona.Posicion;
+                personaBuscada.Salario = persona.Salario;
 
                 return RedirectToAction("Index");
             }
@@ -100,7 +138,19 @@ namespace EjemploLab1.Controllers
         // GET: /Persona/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Persona personaBuscada = db.Personas.Find(x => x.PersonaID == id);
+
+            if (personaBuscada == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(personaBuscada);
         }
 
         //
@@ -111,7 +161,19 @@ namespace EjemploLab1.Controllers
             try
             {
                 // TODO: Add delete logic here
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
 
+                Persona personaBuscada = db.Personas.Find(x => x.PersonaID == id);
+
+                if (personaBuscada == null)
+                {
+                    return HttpNotFound();
+                }
+
+                db.Personas.Remove(personaBuscada);
                 return RedirectToAction("Index");
             }
             catch
