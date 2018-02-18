@@ -12,7 +12,7 @@ namespace EjemploLab1.DBContext
         private static volatile DefaultConnection Instance;
         private static object syncRoot = new Object();
 
-        public List<Persona> Personas = new List<Persona>();
+        public LinkedList<Persona> Personas = new LinkedList<Persona>();
         public int IDActual { get; set; }
 
         private DefaultConnection() {

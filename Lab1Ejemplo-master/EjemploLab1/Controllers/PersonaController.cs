@@ -7,6 +7,8 @@ using EjemploLab1.DBContext;
 using EjemploLab1.Models;
 using System.Net;
 using System.IO;
+using System.Data;
+using LumenWorks.Framework.IO.Csv;
 
 namespace EjemploLab1.Controllers
 {
@@ -18,38 +20,36 @@ namespace EjemploLab1.Controllers
        
         
         [HttpPost]  
-       public ActionResult LoadCSV(HttpPostedFileBase postedFile)  
-       {  
-           List<Persona> personas = new List<Persona>();
-           string filePath = string.Empty;  
-           if (postedFile != null)  
-           {  
-               string path = Server.MapPath("~/Uploads/");  
-               if (!Directory.Exists(path))  
-               {  
-                   Directory.CreateDirectory(path);  
-               }  
-               filePath = path + Path.GetFileName(postedFile.FileName);  
-               string extension = Path.GetExtension(postedFile.FileName);  
-               postedFile.SaveAs(filePath);  
-  
-               string csvData = System.IO.File.ReadAllText(filePath);  
-               foreach(string row in csvData.Split(' '))  
-               {  
-                   if (!string.IsNullOrEmpty(row))  
+       public ActionResult LoadCSV(HttpPostedFileBase upload)  
+       {
+           if (ModelState.IsValid)
+           {
+
+               if (upload != null && upload.ContentLength > 0)
+               {
+
+                   if (upload.FileName.EndsWith(".csv"))
                    {
-                       personas.Add(new Persona
+                       Stream stream = upload.InputStream;
+                       DataTable csvTable = new DataTable();
+                       using (CsvReader csvReader =
+                           new CsvReader(new StreamReader(stream), true))
                        {
-                           PersonaID = Convert.ToInt32(row.Split(',')[0]),
-                           Club = row.Split(',')[1],
-                           Apellido = (row.Split(',')[2]),
-                           Nombre = row.Split(',')[3],
-                           Posicion = row.Split(',')[4],
-                           Salario = Convert.ToDouble(row.Split(',')[5]),
-                       });
-                   }  
-               }  
-           }  
+                           csvTable.Load(csvReader);
+                       }
+                       return View(csvTable);
+                   }
+                   else
+                   {
+                       ModelState.AddModelError("File", "This file format is not supported");
+                       return View();
+                   }
+               }
+               else
+               {
+                   ModelState.AddModelError("File", "Please Upload Your file");
+               }
+           }
            return View();  
        }
         // GET: /Persona/
