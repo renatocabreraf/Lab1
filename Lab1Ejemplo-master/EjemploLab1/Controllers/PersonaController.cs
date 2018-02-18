@@ -17,39 +17,8 @@ namespace EjemploLab1.Controllers
     {
 
         DefaultConnection db = DefaultConnection.getInstance;
-        [HttpPost]  
-       public ActionResult LoadCSV(HttpPostedFileBase upload)  
-       {
-           if (ModelState.IsValid)
-           {
-
-               if (upload != null && upload.ContentLength > 0)
-               {
-
-                   if (upload.FileName.EndsWith(".csv"))
-                   {
-                       Stream stream = upload.InputStream;
-                       DataTable csvTable = new DataTable();
-                       using (CsvReader csvReader =
-                           new CsvReader(new StreamReader(stream), true))
-                       {
-                           csvTable.Load(csvReader);
-                       }
-                       return View(csvTable);
-                   }
-                   else
-                   {
-                       ModelState.AddModelError("File", "This file format is not supported");
-                       return View();
-                   }
-               }
-               else
-               {
-                   ModelState.AddModelError("File", "Please Upload Your file");
-               }
-           }
-           return View();  
-       }
+      
+    
         // GET: /Persona/
         public ActionResult Index()
         {
@@ -190,6 +159,49 @@ namespace EjemploLab1.Controllers
             {
                 return View();
             }
+        }
+        public ActionResult Upload()
+        {
+            return View();
+        }
+        /// <summary>
+        /// Se sube un archivo
+        /// </summary>
+        /// <param name="upload"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Upload(HttpPostedFileBase upload, [Bind(Include = "PersonaID,Nombre,Apellido,Edad,Salario,Club,Posicion")] Persona persona)
+        {
+            if (ModelState.IsValid)
+            {
+
+                if (upload != null && upload.ContentLength > 0)
+                {
+
+                    if (upload.FileName.EndsWith(".csv"))
+                    {
+                        Stream stream = upload.InputStream;
+                        DataTable csvTable = new DataTable();
+                        using (CsvReader csvReader =
+                            new CsvReader(new StreamReader(stream), true))
+                        {
+                            csvTable.Load(csvReader);
+                        }
+                        return View(csvTable);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("File", "This file format is not supported");
+                        return View();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("File", "Please Upload Your file");
+                }
+            }
+            return View();
         }
     }
 }
