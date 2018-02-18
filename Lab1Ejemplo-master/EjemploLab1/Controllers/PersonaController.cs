@@ -81,7 +81,7 @@ namespace EjemploLab1.Controllers
             {
                 // TODO: Add insert logic here
                 persona.PersonaID = ++db.IDActual;
-                db.Personas.Add(persona);
+                db.Personas.AddLast(persona);
                 return RedirectToAction("Index");
             }
             catch
@@ -98,7 +98,7 @@ namespace EjemploLab1.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Persona personaBuscada = db.Personas.Find(x => x.PersonaID == id);
+            Persona personaBuscada = db.Personas.FirstOrDefault(x => x.PersonaID == id);
 
             if (personaBuscada == null) {
                 return HttpNotFound();
@@ -115,7 +115,7 @@ namespace EjemploLab1.Controllers
         {
             try
             {
-                Persona personaBuscada = db.Personas.Find(x => x.PersonaID == persona.PersonaID);
+                Persona personaBuscada = db.Personas.FirstOrDefault(x => x.PersonaID == persona.PersonaID);
                 if (personaBuscada == null)
                 {
                     return HttpNotFound();
@@ -143,7 +143,7 @@ namespace EjemploLab1.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Persona personaBuscada = db.Personas.Find(x => x.PersonaID == id);
+            Persona personaBuscada = db.Personas.FirstOrDefault(x => x.PersonaID == id);
 
             if (personaBuscada == null)
             {
@@ -166,7 +166,7 @@ namespace EjemploLab1.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
-                Persona personaBuscada = db.Personas.Find(x => x.PersonaID == id);
+                Persona personaBuscada = db.Personas.FirstOrDefault(x => x.PersonaID == id);
 
                 if (personaBuscada == null)
                 {
