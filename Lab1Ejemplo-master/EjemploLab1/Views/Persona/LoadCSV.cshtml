@@ -1,5 +1,4 @@
-﻿@model EjemploLab1.Models.Persona
-@model System.Data.DataTable
+﻿@model System.Data.DataTable
 @using System.Data;
 
 @{
@@ -8,7 +7,7 @@
 
 <h2>Upload File</h2>
 
-@using (Html.BeginForm("Upload", "Home", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Upload", "Persona", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()

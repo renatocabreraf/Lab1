@@ -17,8 +17,6 @@ namespace EjemploLab1.Controllers
     {
 
         DefaultConnection db = DefaultConnection.getInstance;
-       
-        
         [HttpPost]  
        public ActionResult LoadCSV(HttpPostedFileBase upload)  
        {
@@ -62,7 +60,19 @@ namespace EjemploLab1.Controllers
         // GET: /Persona/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Persona personaBuscada = db.Personas.FirstOrDefault(x => x.PersonaID == id);
+
+            if (personaBuscada == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(personaBuscada);
         }
 
         //
@@ -92,7 +102,7 @@ namespace EjemploLab1.Controllers
 
         //
         // GET: /Persona/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
             if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
