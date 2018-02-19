@@ -160,6 +160,10 @@ namespace EjemploLab1.Controllers
                 return View();
             }
         }
+        /// <summary>
+        /// GET UPLOAD
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Upload()
         {
             return View();
@@ -171,7 +175,7 @@ namespace EjemploLab1.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Upload(HttpPostedFileBase upload, [Bind(Include = "PersonaID,Nombre,Apellido,Edad,Salario,Club,Posicion")] Persona persona)
+        public ActionResult Upload(HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
@@ -187,6 +191,20 @@ namespace EjemploLab1.Controllers
                             new CsvReader(new StreamReader(stream), true))
                         {
                             csvTable.Load(csvReader);
+                        }
+                        DataRow[] currentRows = csvTable.Select(
+    null, null, DataViewRowState.CurrentRows);
+                        if (currentRows.Length < 1)
+                            Console.WriteLine("No Current Rows Found");
+                        else
+                        {
+                            string fila;
+                            foreach (DataRow row in currentRows)
+                            {
+                                foreach (DataColumn column in csvTable.Columns)
+                                     fila = row.ToString();
+
+                            }
                         }
                         return View(csvTable);
                     }

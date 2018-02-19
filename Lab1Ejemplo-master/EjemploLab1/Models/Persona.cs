@@ -12,15 +12,15 @@ namespace EjemploLab1.Models
         public int PersonaID { get; set; }
 
 
-        [Required (AllowEmptyStrings = false, ErrorMessage = "Se necesita un Club")]
+        
 
         public string Club { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Se necesita un Apellido")]
+      
 
         public string Apellido { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Se necesita un Nombre")]
+      
 
         public string Nombre { get; set; }
 
