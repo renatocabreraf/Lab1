@@ -215,7 +215,7 @@ namespace EjemploLab1.Controllers
                                         Apellido = row.Split(',')[1],
                                         Nombre = row.Split(',')[2],
                                         Posicion = row.Split(',')[3],
-                                        Salario = Convert.ToDouble(row.Split(',')[4]),
+                                        Salario = row.Split(',')[4],
 
                                     });
                                 
