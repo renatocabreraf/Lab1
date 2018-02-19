@@ -28,7 +28,7 @@ namespace EjemploLab1.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 personas = personas.Where(s => s.Apellido.Contains(searchString)
-                                       || s.Nombre.Contains(searchString));
+                                       || s.Nombre.Contains(searchString) || s.Club.Contains(searchString) || s.Posicion.Contains(searchString));
             }
             return View(personas.ToList());
         }
