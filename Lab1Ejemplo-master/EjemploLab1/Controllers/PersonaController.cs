@@ -70,32 +70,6 @@ namespace EjemploLab1.Controllers
         }
 
         //
-        //GET: /Persona/Search
-
-        public ActionResult Search()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Persona/Create
-        [HttpPost]
-        public ActionResult Search([Bind(Include = "PersonaID,Nombre,Apellido,Edad,Salario,Club,Posicion")] Persona persona)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-                
-                db.Personas.FirstOrDefault();
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
         // GET: /Persona/Edit/5
         public ActionResult Edit(int id)
         {
@@ -179,6 +153,7 @@ namespace EjemploLab1.Controllers
                 }
 
                 db.Personas.Remove(personaBuscada);
+                db.IDActual--;
                 return RedirectToAction("Index");
             }
             catch
@@ -186,15 +161,10 @@ namespace EjemploLab1.Controllers
                 return View();
             }
         }
-<<<<<<< HEAD
         /// <summary>
         /// GET UPLOAD
         /// </summary>
         /// <returns></returns>
-=======
-
-     
->>>>>>> 2018a528e49a72d108338776f07a8e291e216187
         public ActionResult Upload()
         {
             return View();
@@ -210,7 +180,7 @@ namespace EjemploLab1.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                string filePath = string.Empty; 
                 if (upload != null && upload.ContentLength > 0)
                 {
 
@@ -223,20 +193,35 @@ namespace EjemploLab1.Controllers
                         {
                             csvTable.Load(csvReader);
                         }
-                        DataRow[] currentRows = csvTable.Select(
-    null, null, DataViewRowState.CurrentRows);
-                        if (currentRows.Length < 1)
-                            Console.WriteLine("No Current Rows Found");
-                        else
+                        string path = Server.MapPath("~/Uploads/");
+                        if (!Directory.Exists(path))
                         {
-                            string fila;
-                            foreach (DataRow row in currentRows)
-                            {
-                                foreach (DataColumn column in csvTable.Columns)
-                                     fila = row.ToString();
-
-                            }
+                            Directory.CreateDirectory(path);
                         }
+                        filePath = path + Path.GetFileName(upload.FileName);
+                        string extension = Path.GetExtension(upload.FileName);
+                        upload.SaveAs(filePath);
+
+                        string csvData = System.IO.File.ReadAllText(filePath);
+                        foreach (string row in csvData.Split('\n'))
+                        {
+                            
+                                if (!string.IsNullOrEmpty(row))
+                                {
+                                    db.Personas.AddLast(new Persona
+                                    {
+                                        PersonaID = ++db.IDActual,
+                                        Club = row.Split(',')[0],
+                                        Apellido = row.Split(',')[1],
+                                        Nombre = row.Split(',')[2],
+                                        Posicion = row.Split(',')[3],
+                                        Salario = Convert.ToDouble(row.Split(',')[4]),
+
+                                    });
+                                
+                            }
+                            
+                        }  
                         return View(csvTable);
                     }
                     else
