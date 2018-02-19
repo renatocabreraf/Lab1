@@ -7,12 +7,18 @@
 <h2>Index</h2>
 
 <p>
-    
-    @Html.ActionLink("Crear Nuevo        ", "Create")
-    
-    @Html.ActionLink("Cargar Archivo     ", "Upload")
-    
 
+    @Html.ActionLink("Crear Nuevo        ", "Create")
+
+    @Html.ActionLink("Cargar Archivo     ", "Upload")
+
+    @using (Html.BeginForm())
+    {
+    <p>
+        Encontrar por nombre: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+    }
    
 
 </p>
@@ -61,7 +67,7 @@
         </td>
        
     </tr>
-    @Html.ActionLink("Search", "Search", new { id = item.PersonaID })
+    
 }
 
 </table>

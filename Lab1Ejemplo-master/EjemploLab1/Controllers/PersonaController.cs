@@ -20,9 +20,17 @@ namespace EjemploLab1.Controllers
       
     
         // GET: /Persona/
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            return View(db.Personas.ToList());
+            
+            var personas = from s in db.Personas
+                           select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                personas = personas.Where(s => s.Apellido.Contains(searchString)
+                                       || s.Nombre.Contains(searchString));
+            }
+            return View(personas.ToList());
         }
 
         //
@@ -236,6 +244,16 @@ namespace EjemploLab1.Controllers
                 }
             }
             return View();
+        }
+
+        public ActionResult Buscador(String Nombre)
+        {
+            var busqueda = from s in db.Personas select s;
+            if (!String.IsNullOrEmpty(Nombre))
+            {
+                busqueda = busqueda.Where(j => j.Nombre.Contains(Nombre));
+            }
+            return View(busqueda);
         }
     }
 }
