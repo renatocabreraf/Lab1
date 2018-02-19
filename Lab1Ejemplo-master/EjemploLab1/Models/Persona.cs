@@ -8,10 +8,11 @@ namespace EjemploLab1.Models
 {
     public class Persona
     {
-        [Key]
+       
         public int PersonaID { get; set; }
 
 
+<<<<<<< HEAD
         
 
         public string Club { get; set; }
@@ -22,6 +23,17 @@ namespace EjemploLab1.Models
 
       
 
+=======
+   
+
+        public string Club { get; set; }
+
+        
+
+        public string Apellido { get; set; }
+
+     
+>>>>>>> 2018a528e49a72d108338776f07a8e291e216187
         public string Nombre { get; set; }
 
        

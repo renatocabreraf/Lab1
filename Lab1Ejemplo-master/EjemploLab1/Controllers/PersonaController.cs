@@ -70,6 +70,32 @@ namespace EjemploLab1.Controllers
         }
 
         //
+        //GET: /Persona/Search
+
+        public ActionResult Search()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Persona/Create
+        [HttpPost]
+        public ActionResult Search([Bind(Include = "PersonaID,Nombre,Apellido,Edad,Salario,Club,Posicion")] Persona persona)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+                
+                db.Personas.FirstOrDefault();
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        //
         // GET: /Persona/Edit/5
         public ActionResult Edit(int id)
         {
@@ -160,10 +186,15 @@ namespace EjemploLab1.Controllers
                 return View();
             }
         }
+<<<<<<< HEAD
         /// <summary>
         /// GET UPLOAD
         /// </summary>
         /// <returns></returns>
+=======
+
+     
+>>>>>>> 2018a528e49a72d108338776f07a8e291e216187
         public ActionResult Upload()
         {
             return View();
