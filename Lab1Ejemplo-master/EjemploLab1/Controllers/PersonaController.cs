@@ -85,8 +85,8 @@ namespace EjemploLab1.Controllers
             try
             {
                 // TODO: Add insert logic here
-                persona.PersonaID = ++db.IDActual;
-                db.Personas.Find(persona);
+                
+                db.Personas.FirstOrDefault();
                 return RedirectToAction("Index");
             }
             catch
