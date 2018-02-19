@@ -8,9 +8,12 @@
 
 <p>
     
-    @Html.ActionLink("Crear Nuevo", "Create")
+    @Html.ActionLink("Crear Nuevo        ", "Create")
+    
+    @Html.ActionLink("Cargar Archivo     ", "Upload")
+    
 
-    @Html.ActionLink("Cargar Archivo", "Upload")
+   
 
 </p>
 <table class="table">
@@ -53,8 +56,10 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PersonaID }) |
             @Html.ActionLink("Details", "Details", new { id=item.PersonaID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PersonaID })
+            @Html.ActionLink("Delete", "Delete", new { id=item.PersonaID }) |
+            
         </td>
+        @Html.ActionLink("Search", "Search", new { id = item.PersonaID })
     </tr>
 }
 
